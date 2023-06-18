@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jun 09, 2023 at 04:28 PM
+-- Generation Time: Jun 18, 2023 at 12:34 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -18,14 +18,14 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `anarkist`
+-- Database: `twibber`
 --
 
 DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `delete_tap` (IN `_tap_id` BIGINT UNSIGNED, IN `_bar_id` BIGINT UNSIGNED)   BEGIN
+CREATE DEFINER=`twibber`@`%` PROCEDURE `delete_tap` (IN `_tap_id` BIGINT UNSIGNED, IN `_bar_id` BIGINT UNSIGNED)   BEGIN
     DECLARE _max_tap_number BIGINT UNSIGNED;
     DECLARE _tap_number BIGINT UNSIGNED;
     
@@ -50,7 +50,7 @@ CREATE DEFINER=`anarkist`@`%` PROCEDURE `delete_tap` (IN `_tap_id` BIGINT UNSIGN
     SELECT _max_tap_number;
 END$$
 
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `get_beers_by_fuzzy_name` (IN `_search_term` VARCHAR(100), IN `_limit` INT UNSIGNED, IN `_offset` INT UNSIGNED)   SELECT * FROM beers_list
+CREATE DEFINER=`twibber`@`%` PROCEDURE `get_beers_by_fuzzy_name` (IN `_search_term` VARCHAR(100), IN `_limit` INT UNSIGNED, IN `_offset` INT UNSIGNED)   SELECT * FROM beers_list
 WHERE LOWER(SOUNDEX(beer_name))
 LIKE LOWER(REPLACE(CONCAT("%", SOUNDEX(_search_term), "%"), " ", "%"))
 
@@ -65,14 +65,14 @@ LIKE LOWER(REPLACE(CONCAT("%", (_search_term), "%"), " ", "%"))
 
 LIMIT _offset,_limit$$
 
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `get_beer_style_by_fuzzy_name` (IN `_beer_style_name` VARCHAR(100), IN `_offset` INT UNSIGNED, IN `_limit` INT)   SELECT * FROM beer_styles
+CREATE DEFINER=`twibber`@`%` PROCEDURE `get_beer_style_by_fuzzy_name` (IN `_beer_style_name` VARCHAR(100), IN `_offset` INT UNSIGNED, IN `_limit` INT)   SELECT * FROM beer_styles
 WHERE LOWER(SOUNDEX(beer_style_name))
 LIKE LOWER(REPLACE(CONCAT("%", SOUNDEX(_beer_style_name), "%"), " ", "%"))
 OR LOWER(beer_style_name)
 LIKE LOWER(REPLACE(CONCAT("%", (_beer_style_name), "%"), " ", "%"))
 LIMIT _offset,_limit$$
 
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `get_brewery_by_fuzzy_name` (IN `_brewery_name` VARCHAR(50), IN `_offset` BIGINT UNSIGNED, IN `_limit` BIGINT UNSIGNED)   SELECT * FROM breweries
+CREATE DEFINER=`twibber`@`%` PROCEDURE `get_brewery_by_fuzzy_name` (IN `_brewery_name` VARCHAR(50), IN `_offset` BIGINT UNSIGNED, IN `_limit` BIGINT UNSIGNED)   SELECT * FROM breweries
 WHERE LOWER(SOUNDEX(brewery_name))
 LIKE LOWER(REPLACE(CONCAT("%", SOUNDEX(_brewery_name), "%"), " ", "%"))
 
@@ -88,7 +88,7 @@ LIKE LOWER(REPLACE(CONCAT("%", (_brewery_name), "%"), " ", "%"))
 
 LIMIT _offset,_limit$$
 
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `get_users_by_fuzzy_name` (IN `_search_term` VARCHAR(100), IN `_offset` BIGINT UNSIGNED, IN `_limit` BIGINT UNSIGNED, IN `_role_id` TINYINT(3) UNSIGNED, IN `_user_id` BIGINT UNSIGNED)   SELECT * FROM users_list
+CREATE DEFINER=`twibber`@`%` PROCEDURE `get_users_by_fuzzy_name` (IN `_search_term` VARCHAR(100), IN `_offset` BIGINT UNSIGNED, IN `_limit` BIGINT UNSIGNED, IN `_role_id` TINYINT(3) UNSIGNED, IN `_user_id` BIGINT UNSIGNED)   SELECT * FROM users_list
 WHERE LOWER(SOUNDEX(user_name))
 LIKE LOWER(REPLACE(CONCAT("%", SOUNDEX(_search_term), "%"), " ", "%"))
 AND user_role_id >= _role_id AND user_id != _user_id
@@ -107,7 +107,7 @@ AND user_role_id >= _role_id AND user_id != _user_id
 
 LIMIT _offset,_limit$$
 
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `insert_session` (IN `_user_id` BIGINT UNSIGNED, IN `_session_iat` INT UNSIGNED)   BEGIN
+CREATE DEFINER=`twibber`@`%` PROCEDURE `insert_session` (IN `_user_id` BIGINT UNSIGNED, IN `_session_iat` INT UNSIGNED)   BEGIN
 
 DELETE FROM sessions
 WHERE fk_user_id = _user_id;
@@ -119,7 +119,7 @@ SELECT LAST_INSERT_ID() as session_id;
 
 END$$
 
-CREATE DEFINER=`anarkist`@`%` PROCEDURE `insert_tap` (IN `_is_off_wall` BOOLEAN, IN `_beer_id` BIGINT UNSIGNED, IN `_bar_id` BIGINT UNSIGNED)   BEGIN
+CREATE DEFINER=`twibber`@`%` PROCEDURE `insert_tap` (IN `_is_off_wall` BOOLEAN, IN `_beer_id` BIGINT UNSIGNED, IN `_bar_id` BIGINT UNSIGNED)   BEGIN
     DECLARE _tap_number INT UNSIGNED;
 	IF NOT _is_off_wall THEN
 
@@ -231,7 +231,7 @@ CREATE TABLE `beers` (
 --
 
 INSERT INTO `beers` (`beer_id`, `beer_name`, `fk_brewery_id`, `beer_ebc`, `beer_ibu`, `beer_alc`, `fk_beer_style_id`, `beer_price`, `beer_image`, `beer_description_en`, `beer_description_dk`, `beer_created_at`, `fk_beer_created_by`, `beer_updated_at`, `fk_beer_updated_by`) VALUES
-(123, 'Fizzy Lime Fusion', 59, '12', '15', '5.00', 75, 55, 'd2db70d4-4adb-4109-aeac-436bd4661aaf.jpeg', 'Sweetness and acidity in perfect balance with a clear taste of lychee and lime, but without losing the character of beer. Full-bodied, mouth-watering and refreshingly acidic with a light finishing bitterness.', 'Sødme og syre i perfekt balance med klar smag af lychee og lime, dog uden at miste karatér af øl. Fyldig, læskende og forfriskende syrlig med en let afsluttende bitterhed.', 1685380959, 22, 1685610302, 22),
+(123, 'Fizzy Lime Fusion', 59, '12', '15', '5.00', 75, 55, 'd2db70d4-4adb-4109-aeac-436bd4661aaf.jpeg', 'Sweetness and acidity in perfect balance with a clear taste of lychee and lime, but without losing the character of beer. Full-bodied, mouth-watering and refreshingly acidic with a light finishing bitterness.', 'Sødme og syre i perfekt balance med klar smag af lychee og lime, dog uden at miste karatér af øl. Fyldig, læskende og forfriskende syrlig med en let afsluttende bitterhed.', 1685380959, 22, 1687087612, 22),
 (124, 'Mighty Mild Ale', 59, '30', '30', '0.50', 138, 55, '47982e34-3ef6-475e-93cc-ca96a2f6c810.jpeg', 'A malt-driven beer with notes of grain, caramel, toast and fruitiness from the rye. A beer with a full body, a hint of sweetness and mild carbonation.', 'En maltdrevet øl med noter af korn, karamel, ristet brød og frugtighed fra rugen. En øl med en fyldig krop, en anelse sødme og mild karbonering.', 1685381706, 22, 1685381706, 22),
 (125, 'Pina Colada Milkshake IPA', 59, '12', '25', '6.70', 139, 65, '453c45e6-9b0d-45f6-9872-b4587293dfa3.jpeg', 'Explosion of vanilla and pineapple balanced with a light bitterness and high sweetness. A full-bodied, mouth-watering, satiating and lush beer.', 'Eksplosion af vanilje og ananas balanceret med en let bitterhed og høj sødme. En fyldig, læskende, mættende og frodig øl.', 1685382011, 22, 1685382035, 22),
 (126, 'Red Noses', 59, '35', '25', '5.50', 89, 55, '71953751-8ca5-46a6-addd-ed148e7bdbce.jpeg', 'This year we are making a Christmas beer in a more classic sense, created to match the Danish Christmas food. However, we have kept the anarchist twist. We\'ve done that by giving this rye-based Red Ale a shot of cranberry. The use of rye is as if created to accompany rye bread, and the general malt and hop composition means that this beer is going to be absolutely perfect for the Danish Christmas meal.', 'I år laver vi en juleøl i mere klassisk forstand, skabt til at passe til den danske julemad. Vi har dog bevaret det anarkistiske twist. Det har vi gjort ved at give denne rug baserede Red Ale et skud tranebær. Brugen af rug er som skabt til at ledsage rugbrød, og den generelle malt og humlesammensætning gør, at denne øl, kommer til at være helt perfekt til den danske julemad.', 1685382260, 22, 1685382260, 22),
@@ -261,7 +261,33 @@ INSERT INTO `beers` (`beer_id`, `beer_name`, `fk_brewery_id`, `beer_ebc`, `beer_
 (152, 'Blonde', 120, '11', '24', '6.80', 117, 55, '8cecd082-d4d4-4c21-bb8d-3d36bbe61adb.jpeg', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.', 'Det er en kendsgerning, at man bliver distraheret af læsbart indhold på en side, når man betragter dens layout. Meningen med at bruge Lorem Ipsum er, at teksten indeholder mere eller mindre almindelig tekstopbygning i modsætning til Tekst her - og mere tekst her, mens det samtidigt ligner almindelig tekst', 1686307022, 22, 1686309786, 22),
 (153, 'Mumbo Jumbo #1', 66, '12', '20', '6.00', 148, 85, '86612bdb-2c3f-48e4-810c-410dfc35ab1e.jpeg', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.', 'Det er en kendsgerning, at man bliver distraheret af læsbart indhold på en side, når man betragter dens layout. Meningen med at bruge Lorem Ipsum er, at teksten indeholder mere eller mindre almindelig tekstopbygning i modsætning til Tekst her - og mere tekst her, mens det samtidigt ligner almindelig tekst', 1686307122, 22, 1686309675, 22),
 (154, 'Red Rye', 59, '35', '65', '7.30', 149, 85, '00130b5e-8ffa-44bc-a66b-f6979f05672c.jpeg', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.', 'Det er en kendsgerning, at man bliver distraheret af læsbart indhold på en side, når man betragter dens layout. Meningen med at bruge Lorem Ipsum er, at teksten indeholder mere eller mindre almindelig tekstopbygning i modsætning til Tekst her - og mere tekst her, mens det samtidigt ligner almindelig tekst', 1686307226, 22, 1686309927, 22),
-(155, 'Kölsch-style Ale', 59, '8', '28', '4.80', 150, 55, 'f6349937-6c88-42bf-870b-acb0634aff42.jpeg', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.', 'Det er en kendsgerning, at man bliver distraheret af læsbart indhold på en side, når man betragter dens layout. Meningen med at bruge Lorem Ipsum er, at teksten indeholder mere eller mindre almindelig tekstopbygning i modsætning til Tekst her - og mere tekst her, mens det samtidigt ligner almindelig tekst', 1686307301, 22, 1686309904, 22);
+(155, 'Kölsch-style Ale', 59, '8', '28', '4.80', 150, 55, 'f6349937-6c88-42bf-870b-acb0634aff42.jpeg', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English.', 'Det er en kendsgerning, at man bliver distraheret af læsbart indhold på en side, når man betragter dens layout. Meningen med at bruge Lorem Ipsum er, at teksten indeholder mere eller mindre almindelig tekstopbygning i modsætning til Tekst her - og mere tekst her, mens det samtidigt ligner almindelig tekst', 1686307301, 22, 1686309904, 22),
+(159, 'Best Buddies', 60, NULL, NULL, '8.60', 75, 65, '34aa1480-6b97-4b15-b283-10c9a9b3f23e.jpeg', NULL, NULL, 1687089663, 22, 1687089663, 22),
+(160, 'Son Of a Brewer', 66, NULL, NULL, '6.00', 148, 55, 'a7b3bc98-6cec-4a5c-8f37-eded35fba7ff.jpeg', NULL, NULL, 1687089713, 22, 1687089713, 22),
+(161, 'Happy Ever After', 100, NULL, NULL, '4.50', 90, 65, '7485b04b-fee5-4a94-aa5f-9c2187833e11.jpeg', NULL, NULL, 1687089791, 22, 1687089791, 22),
+(162, 'Snuble Juice', 61, NULL, NULL, '6.40', 75, 60, 'c5d269b3-3f23-4af7-868d-f9f1698cc089.jpeg', NULL, NULL, 1687090046, 22, 1687090046, 22),
+(163, 'Godnatbajer', 59, NULL, NULL, '12.20', 129, 85, 'ce0e0fba-1c02-4e71-ab81-43bf438d352d.jpeg', NULL, NULL, 1687090089, 22, 1687090089, 22),
+(164, 'Morgenbajer', 59, NULL, NULL, '4.50', 77, 55, '9f13393d-a2ae-4308-9db0-c84affcf1454.jpeg', NULL, NULL, 1687090129, 22, 1687090129, 22),
+(165, 'Sunshine IPA', 61, NULL, NULL, '7.00', 76, 75, '499e0b84-0c88-48e4-97a4-c4ec4f30d6ca.jpeg', NULL, NULL, 1687090175, 22, 1687090175, 22),
+(166, 'Blackbird', 63, NULL, NULL, '8.70', 105, 70, 'e0d92804-cf8c-4700-8ac0-c7f8f61bc63c.jpeg', NULL, NULL, 1687090228, 22, 1687090228, 22),
+(167, 'Cookie Monster', 60, NULL, NULL, '5.60', 75, 65, 'd9c11b49-3d97-4aa4-86cc-de09bfedf32b.jpeg', NULL, NULL, 1687090260, 22, 1687090260, 22),
+(168, 'Raspberry Kiss', 62, NULL, NULL, '4.60', 81, 70, 'a24f5f95-dbfa-4676-8752-9dd59ab00653.jpeg', NULL, NULL, 1687090351, 22, 1687090351, 22),
+(169, 'Burst IPA', 62, NULL, NULL, '6.40', 72, 55, '74deac23-c35a-4b8c-a399-eca977153e67.jpeg', NULL, NULL, 1687090413, 22, 1687090413, 22),
+(170, 'Ich Bin Berliner', 62, NULL, NULL, '4.60', 81, 60, '34e4968c-2210-49ca-935c-cccca0373a00.jpeg', NULL, NULL, 1687090448, 22, 1687090448, 22),
+(171, 'House of Pale', 61, NULL, NULL, '6.30', 99, 70, '35b1591d-6e34-4a2f-83b9-66cb75ae882d.jpeg', NULL, NULL, 1687090495, 22, 1687090495, 22),
+(172, 'Bone Dry', 62, NULL, NULL, '4.60', 146, 55, '5d2a5735-73fd-4d47-b097-242675876884.jpeg', NULL, NULL, 1687090615, 22, 1687090615, 22),
+(173, 'Drinking in the Sun', 62, NULL, NULL, '7.30', 144, 60, 'db9d5dce-7aca-4460-8505-7dcd2ffbf150.jpeg', NULL, NULL, 1687090715, 22, 1687090715, 22),
+(174, 'Limbo Lime', 62, NULL, NULL, '5.40', 75, 55, 'c66351e4-f26d-4df4-93a2-c0f663a52ce6.jpeg', NULL, NULL, 1687090763, 22, 1687090763, 22),
+(175, 'Heated Seats', 62, NULL, NULL, '0.40', 74, 55, '91591def-6e09-4a5d-a0af-fa758872eed0.jpeg', NULL, NULL, 1687090797, 22, 1687090797, 22),
+(176, 'Iskold', 62, NULL, NULL, '4.40', 77, 50, '5acbfd77-a714-42f4-a52c-16ed4d7dfb51.jpeg', NULL, NULL, 1687090828, 22, 1687090828, 22),
+(177, 'Cocoa Shake', 62, NULL, NULL, '7.80', 105, 70, '242982ca-b63b-4e7c-bfd0-0dfe3d32a11c.png', NULL, NULL, 1687090886, 22, 1687090886, 22),
+(178, 'Monk\'s Brew', 60, NULL, NULL, '5.40', 75, 70, '51b5d4a2-aba2-45c6-9f28-32484da4c282.jpeg', NULL, NULL, 1687090947, 22, 1687090947, 22),
+(179, 'Great Escape', 59, NULL, NULL, '5.60', 125, 55, '134d166a-db31-48bb-b37f-9379b1908901.jpeg', NULL, NULL, 1687090979, 22, 1687090979, 22),
+(180, 'Tuborg Nul', 70, NULL, NULL, '0.20', 77, 45, NULL, NULL, NULL, 1687091002, 22, 1687091002, 22),
+(181, 'Once Upon a Time', 60, NULL, NULL, '4.50', 80, 55, 'eada8b5e-3007-426b-ba11-c502cc95e5ac.jpeg', NULL, NULL, 1687091027, 22, 1687091027, 22),
+(182, 'Hoppy Helpers', 61, NULL, NULL, '7.50', 151, 75, '1e62eb62-3820-41c4-bb6e-f5b489f0a0d9.jpeg', NULL, NULL, 1687091089, 22, 1687091089, 22),
+(183, 'One Too Many', 60, NULL, NULL, '10.40', 137, 85, '1780e45f-4d0c-4c52-aabb-83958c2102d0.jpeg', NULL, NULL, 1687091133, 22, 1687091133, 22),
+(184, 'Broken Skulls', 59, NULL, NULL, '6.30', 75, 70, 'aa927216-4c98-4438-a158-5cd29324c81e.jpeg', NULL, NULL, 1687091160, 22, 1687091160, 22);
 
 -- --------------------------------------------------------
 
@@ -346,6 +372,7 @@ INSERT INTO `beer_styles` (`beer_style_id`, `beer_style_name`) VALUES
 (75, 'Hazy IPA'),
 (144, 'Hazy NEIPA'),
 (112, 'Honey Beer'),
+(151, 'Hoppy'),
 (137, 'Imperial Stout'),
 (72, 'IPA'),
 (74, 'Juicy IPA'),
@@ -516,7 +543,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `fk_user_id`, `session_iat`) VALUES
-(205, 22, 1686314078);
+(207, 22, 1687091608);
 
 -- --------------------------------------------------------
 
@@ -684,7 +711,7 @@ INSERT INTO `user_roles` (`user_role_id`, `user_role_title`) VALUES
 --
 DROP TABLE IF EXISTS `beers_list`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`anarkist`@`%` SQL SECURITY DEFINER VIEW `beers_list`  AS SELECT `beers`.`beer_id` AS `beer_id`, `beers`.`beer_name` AS `beer_name`, `beers`.`fk_brewery_id` AS `fk_brewery_id`, `beers`.`beer_ebc` AS `beer_ebc`, `beers`.`beer_ibu` AS `beer_ibu`, `beers`.`beer_alc` AS `beer_alc`, `beers`.`fk_beer_style_id` AS `fk_beer_style_id`, `beers`.`beer_price` AS `beer_price`, `beers`.`beer_image` AS `beer_image`, `beers`.`beer_description_en` AS `beer_description_en`, `beers`.`beer_description_dk` AS `beer_description_dk`, `beers`.`beer_created_at` AS `beer_created_at`, `beers`.`fk_beer_created_by` AS `fk_beer_created_by`, `beers`.`beer_updated_at` AS `beer_updated_at`, `beers`.`fk_beer_updated_by` AS `fk_beer_updated_by`, `breweries`.`brewery_name` AS `brewery_name`, `breweries`.`brewery_menu_name` AS `brewery_menu_name`, `beer_styles`.`beer_style_name` AS `beer_style_name`, `c`.`user_name` AS `beer_created_by_user_name`, `u`.`user_name` AS `beer_updated_by_user_name` FROM ((((`beers` join `beer_styles` on((`beers`.`fk_beer_style_id` = `beer_styles`.`beer_style_id`))) join `breweries` on((`beers`.`fk_brewery_id` = `breweries`.`brewery_id`))) left join `users` `c` on((`beers`.`fk_beer_created_by` = `c`.`user_id`))) left join `users` `u` on((`beers`.`fk_beer_updated_by` = `u`.`user_id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`twibber`@`%` SQL SECURITY DEFINER VIEW `beers_list`  AS SELECT `beers`.`beer_id` AS `beer_id`, `beers`.`beer_name` AS `beer_name`, `beers`.`fk_brewery_id` AS `fk_brewery_id`, `beers`.`beer_ebc` AS `beer_ebc`, `beers`.`beer_ibu` AS `beer_ibu`, `beers`.`beer_alc` AS `beer_alc`, `beers`.`fk_beer_style_id` AS `fk_beer_style_id`, `beers`.`beer_price` AS `beer_price`, `beers`.`beer_image` AS `beer_image`, `beers`.`beer_description_en` AS `beer_description_en`, `beers`.`beer_description_dk` AS `beer_description_dk`, `beers`.`beer_created_at` AS `beer_created_at`, `beers`.`fk_beer_created_by` AS `fk_beer_created_by`, `beers`.`beer_updated_at` AS `beer_updated_at`, `beers`.`fk_beer_updated_by` AS `fk_beer_updated_by`, `breweries`.`brewery_name` AS `brewery_name`, `breweries`.`brewery_menu_name` AS `brewery_menu_name`, `beer_styles`.`beer_style_name` AS `beer_style_name`, `c`.`user_name` AS `beer_created_by_user_name`, `u`.`user_name` AS `beer_updated_by_user_name` FROM ((((`beers` join `beer_styles` on((`beers`.`fk_beer_style_id` = `beer_styles`.`beer_style_id`))) join `breweries` on((`beers`.`fk_brewery_id` = `breweries`.`brewery_id`))) left join `users` `c` on((`beers`.`fk_beer_created_by` = `c`.`user_id`))) left join `users` `u` on((`beers`.`fk_beer_updated_by` = `u`.`user_id`))) ;
 
 -- --------------------------------------------------------
 
@@ -693,7 +720,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`anarkist`@`%` SQL SECURITY DEFINER VIEW `bee
 --
 DROP TABLE IF EXISTS `taps_list`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`anarkist`@`%` SQL SECURITY DEFINER VIEW `taps_list`  AS SELECT `taps`.`tap_id` AS `tap_id`, `taps`.`tap_number` AS `tap_number`, `taps`.`fk_beer_id` AS `fk_beer_id`, `taps`.`fk_bar_id` AS `fk_bar_id`, `taps`.`tap_unavailable` AS `tap_unavailable`, `beers_list`.`beer_id` AS `beer_id`, `beers_list`.`beer_name` AS `beer_name`, `beers_list`.`fk_brewery_id` AS `fk_brewery_id`, `beers_list`.`beer_ebc` AS `beer_ebc`, `beers_list`.`beer_ibu` AS `beer_ibu`, `beers_list`.`beer_alc` AS `beer_alc`, `beers_list`.`fk_beer_style_id` AS `fk_beer_style_id`, `beers_list`.`beer_price` AS `beer_price`, `beers_list`.`beer_image` AS `beer_image`, `beers_list`.`beer_description_en` AS `beer_description_en`, `beers_list`.`beer_description_dk` AS `beer_description_dk`, `beers_list`.`beer_created_at` AS `beer_created_at`, `beers_list`.`fk_beer_created_by` AS `fk_beer_created_by`, `beers_list`.`beer_updated_at` AS `beer_updated_at`, `beers_list`.`fk_beer_updated_by` AS `fk_beer_updated_by`, `beers_list`.`brewery_name` AS `brewery_name`, `beers_list`.`brewery_menu_name` AS `brewery_menu_name`, `beers_list`.`beer_style_name` AS `beer_style_name`, `beers_list`.`beer_created_by_user_name` AS `beer_created_by_user_name`, `beers_list`.`beer_updated_by_user_name` AS `beer_updated_by_user_name` FROM (`taps` join `beers_list` on((`taps`.`fk_beer_id` = `beers_list`.`beer_id`))) ORDER BY (case when isnull(`taps`.`tap_number`) then 1 else 0 end) ASC, `taps`.`tap_number` ASC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`twibber`@`%` SQL SECURITY DEFINER VIEW `taps_list`  AS SELECT `taps`.`tap_id` AS `tap_id`, `taps`.`tap_number` AS `tap_number`, `taps`.`fk_beer_id` AS `fk_beer_id`, `taps`.`fk_bar_id` AS `fk_bar_id`, `taps`.`tap_unavailable` AS `tap_unavailable`, `beers_list`.`beer_id` AS `beer_id`, `beers_list`.`beer_name` AS `beer_name`, `beers_list`.`fk_brewery_id` AS `fk_brewery_id`, `beers_list`.`beer_ebc` AS `beer_ebc`, `beers_list`.`beer_ibu` AS `beer_ibu`, `beers_list`.`beer_alc` AS `beer_alc`, `beers_list`.`fk_beer_style_id` AS `fk_beer_style_id`, `beers_list`.`beer_price` AS `beer_price`, `beers_list`.`beer_image` AS `beer_image`, `beers_list`.`beer_description_en` AS `beer_description_en`, `beers_list`.`beer_description_dk` AS `beer_description_dk`, `beers_list`.`beer_created_at` AS `beer_created_at`, `beers_list`.`fk_beer_created_by` AS `fk_beer_created_by`, `beers_list`.`beer_updated_at` AS `beer_updated_at`, `beers_list`.`fk_beer_updated_by` AS `fk_beer_updated_by`, `beers_list`.`brewery_name` AS `brewery_name`, `beers_list`.`brewery_menu_name` AS `brewery_menu_name`, `beers_list`.`beer_style_name` AS `beer_style_name`, `beers_list`.`beer_created_by_user_name` AS `beer_created_by_user_name`, `beers_list`.`beer_updated_by_user_name` AS `beer_updated_by_user_name` FROM (`taps` join `beers_list` on((`taps`.`fk_beer_id` = `beers_list`.`beer_id`))) ORDER BY (case when isnull(`taps`.`tap_number`) then 1 else 0 end) ASC, `taps`.`tap_number` ASC ;
 
 -- --------------------------------------------------------
 
@@ -702,7 +729,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`anarkist`@`%` SQL SECURITY DEFINER VIEW `tap
 --
 DROP TABLE IF EXISTS `users_list`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`anarkist`@`%` SQL SECURITY DEFINER VIEW `users_list`  AS SELECT `users`.`user_id` AS `user_id`, `users`.`user_email` AS `user_email`, `users`.`user_name` AS `user_name`, `user_roles`.`user_role_id` AS `user_role_id`, `user_roles`.`user_role_title` AS `user_role_title`, `bars`.`bar_id` AS `bar_id`, `bars`.`bar_name` AS `bar_name`, `bars`.`bar_street` AS `bar_street`, `bars`.`bar_zip_code` AS `bar_zip_code`, `bars`.`bar_city` AS `bar_city` FROM (((`users` left join `user_roles` on((`users`.`fk_user_role_id` = `user_roles`.`user_role_id`))) left join `bar_access` on((`users`.`user_id` = `bar_access`.`fk_user_id`))) left join `bars` on((`bar_access`.`fk_bar_id` = `bars`.`bar_id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`twibber`@`%` SQL SECURITY DEFINER VIEW `users_list`  AS SELECT `users`.`user_id` AS `user_id`, `users`.`user_email` AS `user_email`, `users`.`user_name` AS `user_name`, `user_roles`.`user_role_id` AS `user_role_id`, `user_roles`.`user_role_title` AS `user_role_title`, `bars`.`bar_id` AS `bar_id`, `bars`.`bar_name` AS `bar_name`, `bars`.`bar_street` AS `bar_street`, `bars`.`bar_zip_code` AS `bar_zip_code`, `bars`.`bar_city` AS `bar_city` FROM (((`users` left join `user_roles` on((`users`.`fk_user_role_id` = `user_roles`.`user_role_id`))) left join `bar_access` on((`users`.`user_id` = `bar_access`.`fk_user_id`))) left join `bars` on((`bar_access`.`fk_bar_id` = `bars`.`bar_id`))) ;
 
 --
 -- Indexes for dumped tables
@@ -817,19 +844,19 @@ ALTER TABLE `bars`
 -- AUTO_INCREMENT for table `beers`
 --
 ALTER TABLE `beers`
-  MODIFY `beer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `beer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
 
 --
 -- AUTO_INCREMENT for table `beer_styles`
 --
 ALTER TABLE `beer_styles`
-  MODIFY `beer_style_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `beer_style_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `breweries`
 --
 ALTER TABLE `breweries`
-  MODIFY `brewery_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `brewery_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- AUTO_INCREMENT for table `ingredients`
@@ -847,7 +874,7 @@ ALTER TABLE `pizzas`
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `session_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
+  MODIFY `session_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
 
 --
 -- AUTO_INCREMENT for table `taps`

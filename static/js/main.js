@@ -279,6 +279,8 @@ async function postItem(form, path) {
   const resp = await conn.json();
   form.reset();
 
+  if (path == "beers") document.querySelector(".image-preview").classList.add("hidden")
+
   if (path === "taps") {
     document.querySelector(".beer-info").innerHTML = "";
   }
