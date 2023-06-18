@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jun 18, 2023 at 12:34 PM
+-- Generation Time: Jun 18, 2023 at 12:48 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -543,7 +543,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `fk_user_id`, `session_iat`) VALUES
-(207, 22, 1687091608);
+(207, 22, 1687092484);
 
 -- --------------------------------------------------------
 
