@@ -174,6 +174,15 @@ textarea:not(:focus):not(:placeholder-shown):invalid,
 input.invalid {
     border-color: rgba(220,38,37,var(--tw-bg-opacity)) !important;
 }
+input:not(:focus):not(:placeholder-shown):invalid + .hint,
+textarea:not(:focus):not(:placeholder-shown):invalid + .hint,
+input.invalid + .hint {
+    @apply text-danger !important;
+}
+form:invalid .form-action-bar .btn-primary,
+form:not(.changed) .form-action-bar .btn-primary{
+    @apply bg-outline pointer-events-none
+}
 
 .hint {
     @apply text-sm text-secondary;
@@ -213,19 +222,15 @@ input.invalid {
 }
 
 .btn-primary {
-    @apply outline-none bg-btn-light bg-opacity-90 px-4 py-1 rounded font-medium hover:bg-opacity-100 transition-colors;
-}
-
-.btn-container .btn-primary {
-    @apply rounded-r-none;
+    @apply outline-none bg-btn-light bg-opacity-90 px-8 py-1 rounded font-medium hover:bg-opacity-100 transition-colors;
 }
 
 .btn-secondary {
-    @apply outline-none bg-btn-dark bg-opacity-90 px-2 rounded font-medium hover:bg-opacity-100 transition-colors;
+    @apply outline-none border border-line bg-opacity-90 px-2 rounded font-medium hover:bg-opacity-100 transition-colors;
 }
 
 .btn-container .btn-secondary {
-    @apply rounded-l-none;
+    @apply ml-4;
 }
 
 .btn-danger {

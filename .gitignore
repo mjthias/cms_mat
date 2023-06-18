@@ -6,7 +6,4 @@ __pycache__
 pyvenv.cfg
 hidden.py
 production.py
-*.png
-*.jpg
-*.jpeg
 node_modules

@@ -40,6 +40,8 @@ async function spa(spaUrl, doPushState = true) {
   toggleActiveLink(spaUrl);
   // Start infinite loader listener
   startInfiniteListener()
+  // Update forms valid after change
+  formChangeValidation()
 }
 
 // History back/forth
@@ -150,6 +152,23 @@ async function getNotifications() {
 
 // CMS functionalities
 
+// Make update forms valid after change
+formChangeValidation()
+function formChangeValidation() {
+  const form = document.querySelector("form.form-grid")
+  if (form) {
+    form.classList.remove("changed")
+    form.addEventListener("input", formChanged)
+    form.addEventListener("change", formChanged)
+  }
+}
+function formChanged() {
+  this.addEventListener("input", formChanged)
+  this.addEventListener("change", formChanged)
+  this.classList.add("changed")
+}
+
+// Toggle sub menu
 function toggleTopSubMenu() {
   const target = event.target;
   console.log(target)
@@ -239,16 +258,11 @@ function validateForm(callback) {
   if (event.target.dataset.redir) redir = event.target.dataset.redir;
   const isValid = form.checkValidity()
   if (!isValid) return
+  formChangeValidation()
   callback(form, path, redir);
 }
 
 async function postItem(form, path) {
-  const messElm = document.querySelector(".message");
-  messElm.classList.add("hidden");
-  messElm.classList.remove("success");
-  messElm.classList.remove("error");
-  messElm.innerHTML = "";
-
   const conn = await fetch(`/api/v1/${path}`, {
     method: "POST",
     body: new FormData(form)
@@ -269,14 +283,8 @@ async function postItem(form, path) {
     document.querySelector(".beer-info").innerHTML = "";
   }
 
-  messElm.classList.remove("hidden");
-  messElm.classList.add("success");
-  messElm.innerHTML = `
-    <span>
-      ${resp.info} - 
-      <a href="/${path}/${resp.id}" onclick="spa('/${path}/${resp.id}'); return false;">Go to ${resp.entry_type}</a>
-    </span>
-  `;
+  handleResponse(conn, resp);
+  getNotifications();
   window.scrollTo(0,0);
 }
 
@@ -298,6 +306,7 @@ async function updateItem(form, path) {
   if (conn.status === 204) return;
   const resp = await conn.json();
   handleResponse(conn, resp);
+  getNotifications();
 }
 
 async function deleteItem(form, path, redir) {
@@ -317,6 +326,7 @@ async function deleteItem(form, path, redir) {
   // Success
   if (redir) return window.location.href = `/${redir}`
   toggleDeleteModal();
+  getNotifications();
   spa(`/${path}`);
 }
 
@@ -656,6 +666,7 @@ function handleResponse(conn, resp) {
       errHint.textContent = resp.info;
       errHint.classList.remove("hidden");
       errElm.classList.add("invalid");
+      formChangeValidation()
       errElm.addEventListener("change", () => {
         errElm.classList.remove("invalid");
         errHint.classList.add("hidden");
@@ -665,6 +676,7 @@ function handleResponse(conn, resp) {
       messElm.classList.remove("success");
       messElm.classList.add("error");
       messElm.classList.remove("hidden");
+      formChangeValidation()
     }
   } else {
     if (resp.name) document.querySelector("h1").textContent = resp.name;

@@ -1615,6 +1615,22 @@ input.invalid {
   border-color: rgba(220,38,37,var(--tw-bg-opacity)) !important;
 }
 
+input:not(:focus):not(:-moz-placeholder-shown):invalid + .hint, textarea:not(:focus):not(:-moz-placeholder-shown):invalid + .hint{
+  color: rgba(220,38,37,var(--tw-bg-opacity)) !important;
+}
+
+input:not(:focus):not(:placeholder-shown):invalid + .hint,
+textarea:not(:focus):not(:placeholder-shown):invalid + .hint,
+input.invalid + .hint{
+  color: rgba(220,38,37,var(--tw-bg-opacity)) !important;
+}
+
+form:invalid .form-action-bar .btn-primary,
+form:not(.changed) .form-action-bar .btn-primary{
+  pointer-events: none;
+  background-color: rgba(82,82,82,1);
+}
+
 .hint{
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -1714,8 +1730,8 @@ input.invalid {
   border-radius: 0.25rem;
   background-color: rgba(80,170,100,var(--tw-bg-opacity));
   --tw-bg-opacity: 0.9;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
   font-weight: 500;
@@ -1730,14 +1746,10 @@ input.invalid {
   --tw-bg-opacity: 1;
 }
 
-.btn-container .btn-primary{
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
 .btn-secondary{
   border-radius: 0.25rem;
-  background-color: rgba(67,146,85,var(--tw-bg-opacity));
+  border-width: 1px;
+  border-color: rgba(71,71,71,100);
   --tw-bg-opacity: 0.9;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1754,8 +1766,7 @@ input.invalid {
 }
 
 .btn-container .btn-secondary{
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
+  margin-left: 1rem;
 }
 
 .btn-danger{
