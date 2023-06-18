@@ -1,0 +1,43 @@
+% from bottle import request
+% is_xhr = True if request.headers.get("spa") else False
+% if not is_xhr:
+
+% setdefault('page_title', 'Anarkist')
+% setdefault('render_navigation', True)
+% setdefault('render_sub_menu', False)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4612253046.js" crossorigin="anonymous" defer></script>
+    <script src="/static/js/main.js" defer></script>
+    <link rel="stylesheet" href="/static/css/app.css" />
+    <title>{{page_title}}</title>
+</head>
+<body class="bg-background text-primary overflow-x-hidden grid md:grid-cols-12 mx-auto">
+    % if render_navigation:
+        % include("components/top_menu")
+        % include("components/side_menu")
+    % end
+    <main class="
+        col-span-12 md:col-span-9 xl:col-span-10 my-[var(--menu-height)]
+        % if not render_navigation:
+        md:col-start-3 xl:col-start-2
+        % end
+        "
+    >
+        % if render_sub_menu:
+            % include("components/sub_menu")
+        % end
+% end
+
+        {{!base}}
+
+% if not is_xhr:
+    </main>
+</body>
+</html>
+%end

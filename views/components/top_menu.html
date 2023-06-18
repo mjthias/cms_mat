@@ -1,0 +1,128 @@
+% spaHref = f"spa('/users/{session['user_id']}')"
+
+<nav class="col-span-12 fixed w-full z-50">
+    
+    <div class="flex justify-between items-center h-[var(--menu-height)] px-4 bg-background border border-line border-t-0 border-x-0 relative z-50">
+
+        <div class="relative flex items-center">
+            <div onclick="toggleSideMenu()" data-target="#side_menu" class="md:hidden w-6 h-6 mr-4 inline-flex items-center justify-center relative cursor-pointer">
+                <span id="burger_open" class="absolute w-full h-full text-center pointer-events-none transition-all">
+                    <i class="fa-solid fa-bars"></i>
+                </span>
+                <span id="burger_close" class="absolute w-full h-full text-center pointer-events-none opacity-0 transition-all ">
+                    <i class="fa-solid fa-xmark text-xl -translate-y-1"></i>
+                </span>
+            </div>
+            % if len(session['bar_access']) > 1:
+            <a
+                onclick="toggleTopSubMenu()" 
+                data-target="#location_sub_menu" 
+                class="py-3  flex flex-nowrap items-center transition-colors text-secondary cursor-pointer hover:text-primary"
+                >
+                <span class="pointer-events-none">{{ session["bar_name"] }}</span>
+                <div class="pointer-events-none w-6 h-6 inline-flex items-center justify-center pt-1">
+                    <i class="fa-solid fa-caret-down text-xs transition-transform"></i>    
+                </div>
+            </a>
+            % else:
+            <a class="text-secondary">{{ session['bar_name'] }}</a>
+            % end
+        </div>
+
+       
+        <div class="flex items-center gap-4 h-full">
+            <div id="notifications" class="relative h-full flex items-center hidden">
+                <button
+                    class="relative text-secondary hover:text-primary"
+                    onclick="toggleTopSubMenu()"
+                    data-target="#notifications-sub-menu"
+                    >
+                    <i class="fa-solid fa-bell text-xl pointer-events-none"></i>
+                    <p
+                        class="!text-background absolute top-[50%] -translate-y-1/2 w-full text-center text-xs font-bold pointer-events-none"
+                        >
+                        10
+                    </p>
+                </button>
+                <div
+                    id="notifications-sub-menu"
+                    data-box_height="70"
+                    data-li_height="28"
+                    class="absolute bg-background -right-10 top-full top-sub-menu border border-line border-t-0 w-56"
+                    >
+                    <div class="border-t border-line fixed w-full"></div>
+                    <div class="p-5">
+                        <p class="border-b border-line">Info missing for:</p>
+                        <ul class="mt-2">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <a onclick="toggleTopSubMenu()" data-target="#user_sub_menu" class="py-3 flex flex-nowrap items-center transition-colors text-secondary cursor-pointer hover:text-primary">
+                    <div class="pointer-events-none w-6 h-6 inline-flex items-center justify-center mr-3">
+                        <i class="fa-solid fa-circle-user text-2xl"></i>
+                    </div>
+                    <span class="pointer-events-none hidden md:inline">{{ session["user_name"] }}</span>
+                    <div class="pointer-events-none w-6 h-6 inline-flex items-center justify-center pt-1">
+                        <i class="fa-solid fa-caret-down text-xs transition-transform"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    % if len(session['bar_access']) > 1:
+    <div 
+        id="location_sub_menu" 
+        class="bg-background top-sub-menu border-l-0 border border-line border-t-0 transition-colors fixed top-[46px] left-0 w-56"
+        data-box_height="42"
+        data-li_height="32"
+        >
+        <ul class="p-5">
+            % for bar in session["bar_access"]:
+                % if not session["bar_id"] == bar["bar_id"]:
+                    <li class="mt-2">
+                        <button
+                            onclick="changeLocation()"
+                            data-bar_id="{{bar['bar_id']}}"
+                            class="text-sm transition-colors text-secondary cursor-pointer hover:text-primary">
+                            {{ bar["bar_name"] }}
+                        </button>
+                    </li>
+                % end
+            % end
+        </ul>
+    </div>
+    % end
+
+    <div 
+        id="user_sub_menu" 
+        class="bg-background top-sub-menu border-r-0 border border-line border-t-0 transition-colors fixed top-[46px] right-0 w-40"
+        data-box_height="42"
+        data-li_height="32"
+        >
+        <ul class="p-5">
+            <li>
+                <a class="mt-2 flex flex-nowrap items-center transition-colors text-secondary cursor-pointer hover:text-primary" href="/users/{{ session['user_id'] }}" onclick="{{ spaHref }}; return false">
+                    <div class="w-6 h-6 inline-flex items-center justify-center mr-2">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <span class="text-sm">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a class="mt-2 flex flex-nowrap items-center transition-colors text-secondary cursor-pointer hover:text-primary" href="/sign-out">
+                    <div class="w-6 h-6 inline-flex items-center justify-center mr-2">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </div>
+                    <span class="text-sm">Sign out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+</nav>
+

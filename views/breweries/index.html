@@ -1,0 +1,24 @@
+% rebase("base", page_title="Breweries")
+
+<div id="spa" data-page_title="Breweries" data-page_url="/breweries">
+    <header class="sub-menu">
+        <h1>Breweries</h1>
+        <div class="flex gap-4 items-center">
+            <form class="flex items-center relative" onsubmit="return false;">
+                <input oninput="searchContentList()" type="text" class="sub-menu-search" placeholder="Search...">
+                <i class="fa-solid fa-magnifying-glass absolute pointer-events-none text-secondary right-2"></i>
+            </form>
+            % include("components/href_plus", href="/breweries/create")
+        </div>
+    </header>
+
+    <ul class="content-grid content-search-container !hidden">
+    </ul>
+
+    <section class="content-container">
+        <ul class="content-grid">
+            % include("components/breweries_list")
+            % include("components/loader")
+        </ul>
+    </section>
+</div>

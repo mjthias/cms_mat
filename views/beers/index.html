@@ -1,0 +1,27 @@
+% rebase("base", page_title="Beers") 
+
+<div
+    id="spa"
+    data-page_title="Beers"
+    data-page_url="/beers"
+    >
+
+    <header class="sub-menu">
+        <h1>Beers</h1>
+        <div class="flex gap-4 items-center">
+            <form class="flex items-center relative" onsubmit="return false;">
+                <input oninput="searchContentList()" type="text" class="sub-menu-search" placeholder="Search...">
+                <i class="fa-solid fa-magnifying-glass absolute pointer-events-none text-secondary right-2"></i>
+            </form>
+            % include("components/href_plus", href="/beers/create")
+        </div>
+    </header>
+
+    <section class="content-grid content-search-container !hidden">
+    </section>
+
+    <section class="content-grid content-container">
+        % include("components/beer_list")
+        % include("components/loader")
+    </section>
+</div>

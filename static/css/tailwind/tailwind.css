@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: pixel;
+    src: url(/static/fonts/freecam2.ttf);
+}
+
+:root {
+    --tw-bg-opacity: 1;
+    --menu-height: 3.375rem;
+}
+
+h2 {
+    @apply text-lg;
+}
+
+.overflow-y-hidden {
+    overflow-y: hidden;
+}
+
+.top-sub-menu {
+    @apply max-h-0 overflow-hidden;
+    transition: max-height .2s ease-in-out;
+}
+
+.top-sub-menu.active {
+    @apply max-h-[40px];
+}
+
+#side_menu {
+    height: calc(100vh - var(--menu-height));
+}
+
+.side-menu-link.active, 
+.side-menu-link.active:hover {
+    @apply bg-highlight-bg;
+}
+
+.rotate {
+    transform: rotate(180deg);
+    transform-origin: center; 
+}
+
+.content-grid {
+    @apply grid gap-4 md:gap-6 xl:gap-8 md:grid-cols-2 xl:grid-cols-3
+}
+
+.content-container,
+.content-search-container {
+    @apply p-3 md:p-6 xl:p-12 max-w-7xl mx-auto
+}
+
+.list-topic {
+    @apply text-3xl border-b border-outline -mb-4 pb-1 font-medium col-span-3
+}
+
+.list-topic:not(:first-child) {
+    @apply mt-14
+}
+
+.form-container {
+    @apply max-w-lg mx-auto p-3 md:py-6;
+}
+
+.form-container-sm {
+    @apply max-w-sm mx-auto p-4;
+}
+
+.form-grid {
+    @apply w-full grid grid-cols-2 gap-4;
+}
+
+.input-container-half {
+    @apply col-span-1 w-full relative self-end;
+}
+
+.input-container {
+    @apply col-span-2 md:col-span-1 w-full relative self-end;
+}
+
+.input-container-full {
+    @apply col-span-2 w-full relative;
+}
+
+input:not([type="file"]):not([type="checkbox"]):not(.sub-menu-search), textarea {
+    @apply w-full outline-none bg-input-bg border h-[2.5rem] px-2 rounded transition-colors mt-1;
+}
+
+input:not([type="file"]):not([type="checkbox"]):not(.sub-menu-search):not(.invalid), textarea:not(.invalid) {
+    @apply border-outline focus:border-outline-focus;
+}
+
+.sub-menu-search {
+    @apply w-full outline-none bg-input-bg border border-outline pl-2 pr-8 h-8 rounded focus:border-outline-focus transition-colors;
+}
+
+input[type='file'] {
+    visibility: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    @apply w-5 h-5 border border-outline rounded grid place-content-center bg-input-bg cursor-pointer hover:border-outline-focus focus:border-outline-focus transition-all;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    box-shadow: inset 1em 1em #fff;
+    @apply w-2.5 h-2.5 scale-0;
+    transition: transform .15s ease-in-out;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.checkbox {
+    @apply flex flex-nowrap items-center gap-2 cursor-pointer;
+}
+
+select {
+    @apply w-full outline-none bg-input-bg border border-outline h-[2.5rem] pl-1 rounded focus:border-outline-focus transition-colors mt-1;
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  @apply border border-outline focus:border-outline-focus;
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(45,45,45,1) inset;
+  transition: background-color 5000s ease-in-out 0s, border-color .15s ease-in-out;
+}
+
+/* REMOVE ARROWS FROM NUMBER INPUTS
+/*** Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/*** Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* REMOVE ARROWS FROM NUMBER INPUTS END */
+
+textarea {
+    @apply py-2 h-20;
+    resize: none;
+}
+
+input:not(:focus):not(:placeholder-shown):invalid,
+textarea:not(:focus):not(:placeholder-shown):invalid,
+input.invalid {
+    border-color: rgba(220,38,37,var(--tw-bg-opacity)) !important;
+}
+
+.hint {
+    @apply text-sm text-secondary;
+}
+
+.hint-error {
+    @apply text-sm text-danger;
+}
+
+.image-preview {
+    @apply input-container-full relative;
+}
+
+.search-list {
+    @apply absolute z-10 w-full bg-background border border-line py-2 rounded min-h-[3.25rem];
+    top: calc(100% - 1rem);
+}
+
+.sub-menu {
+    @apply flex justify-between px-4 h-[54px] items-center border-b border-line bg-background sticky top-[var(--menu-height)] z-10
+}
+.sub-menu h1 {
+    @apply text-lg
+}
+
+#delete_modal.hidden ~ div {
+    display: none;
+}
+
+.form-action-bar {
+    @apply h-[var(--menu-height)] px-4 fixed bottom-0 left-0 md:left-1/4 xl:left-[16.65%] w-screen md:w-[calc(100vw-25%)] xl:w-[calc(100vw-16.65%)] bg-background border-t border-line z-10;
+    @apply flex items-center justify-end;
+}
+
+.btn-container {
+    @apply flex flex-nowrap;
+}
+
+.btn-primary {
+    @apply outline-none bg-btn-light bg-opacity-90 px-4 py-1 rounded font-medium hover:bg-opacity-100 transition-colors;
+}
+
+.btn-container .btn-primary {
+    @apply rounded-r-none;
+}
+
+.btn-secondary {
+    @apply outline-none bg-btn-dark bg-opacity-90 px-2 rounded font-medium hover:bg-opacity-100 transition-colors;
+}
+
+.btn-container .btn-secondary {
+    @apply rounded-l-none;
+}
+
+.btn-danger {
+    @apply outline-none bg-btn-danger bg-opacity-90 px-4 py-1 rounded font-medium hover:bg-opacity-100 transition-colors;
+}
+
+.action-bar-sub-menu {
+    @apply absolute bottom-full right-4 py-2 text-right bg-background border border-line;
+}
+
+.caret {
+    position: relative;
+  }
+  
+.caret:before {
+content: '';
+position: absolute;
+top: 8px;
+right: 4px;
+border-top: 10px solid rgba(71,71,71,100);
+border-left: 10px solid transparent;
+border-right: 10px solid transparent;
+}
+
+.caret:after {
+content: '';
+position: absolute;
+right: 6px;
+top: 8px;
+border-top: 8px solid rgba(14,14,14, var(--tw-bg-opacity));
+border-left: 8px solid transparent;
+border-right: 8px solid transparent;
+}
+
+.message {
+    @apply bg-opacity-70 border rounded text-center mb-4
+}
+
+.message a {
+    @apply hover:underline font-medium
+}
+
+.success {
+    @apply bg-btn-light border-btn-light ;
+}
+
+.error {
+    @apply bg-danger border-danger;
+}

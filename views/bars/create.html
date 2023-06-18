@@ -1,0 +1,17 @@
+% rebase("base", page_title="New bar") 
+
+<div
+    id="spa"
+    data-page_title="New bar"
+    data-page_url="/bars/create"
+    >
+
+    <header class="sub-menu">
+        <h1>New bar</h1>
+    </header>
+
+    <section class="form-container">
+        <div class="message hidden"></div>
+        % include("components/bar_form")
+    </section>
+</div>

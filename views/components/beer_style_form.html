@@ -1,0 +1,55 @@
+<form onsubmit="return false" novalidate="true" autocomplete="off">
+    <div class="input-container-full">
+        <label for="beer_style_name">Name <span class="text-danger">*</span></label>
+        <span class="hint-error block hidden"></span>
+        <input 
+            type="text"
+            id="beer_style_name"
+            name="beer_style_name"
+            % if defined('beer_style'):
+                value="{{ beer_style['beer_style_name'] }}"
+            % end
+            minlength="2"
+            maxlength="100"
+            placeholder=" "
+            required
+        />
+        <span class="hint">Min. 2 and max. 100 characters.</span>
+    </div>
+    <div class="form-action-bar">
+        % if defined('beer_style') and not beer_style["style_on_beer"] and not session['role_id'] == 3:
+            <input
+                type="hidden"
+                value="{{ beer_style['beer_style_id'] }}"
+                name="beer_style_id"
+                pattern="[1-9][0-9]" 
+                required
+            />
+            <div class="btn-container">
+                <button class="btn-primary" onclick="validateForm(updateItem)" data-path="beer-styles">Update beer style</button>
+                <button class="btn-secondary" onclick="toggleActionBarSubMenu()">
+                    <i class="fa-solid fa-ellipsis"></i>
+                </button>
+                <div class="action-bar-sub-menu hidden">
+                    <button class="px-4 text-sm transition-colors text-secondary hover:text-primary" onclick="toggleDeleteModal()">
+                        <i class="fa-solid fa-trash-can mr-2"></i>
+                        Delete beer style
+                    </button>
+                    <div class="caret"></div>
+                </div>
+            </div>
+
+        % elif defined('beer_style'):  
+        <input
+            type="hidden"
+            value="{{ beer_style['beer_style_id'] }}"
+            name="beer_style_id"
+            pattern="[1-9][0-9]" 
+            required
+        /> 
+        <button class="btn-primary" onclick="validateForm(updateItem)" data-path="beer-styles">Update beer style</button>
+        % else:
+            <button class="btn-primary" onclick="validateForm(postItem)" data-path="beer-styles">Create beer style</button>
+        % end
+    </div>
+</form>

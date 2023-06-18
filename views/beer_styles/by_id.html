@@ -1,0 +1,15 @@
+% rebase("base", page_title=beer_style["beer_style_name"])
+
+<div id="spa" data-page_title="{{beer_style['beer_style_name']}}" data-page_url="/beer-styles/{{beer_style['beer_style_id']}}">
+    <header class="sub-menu">
+        <h1>{{beer_style["beer_style_name"]}}</h1>
+    </header>
+
+    <section class="form-container relative">
+        <div class="message hidden"></div>
+        % include("components/beer_style_form")
+        % if not beer_style["style_on_beer"]:
+            % include("components/deletion_form", id=beer_style['beer_style_id'], callBack='validateForm(deleteItem)', path="beer-styles")
+        % end
+    </section>
+</div>

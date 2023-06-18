@@ -1,0 +1,107 @@
+<form onsubmit="return false" novalidate="true" class="form-grid" autocomplete="off">
+    <div class="input-container">
+        <label for="beer-name">Beer name <span class="text-danger">*</span></label>
+        <input
+            oninput="searchBeers()"
+            type="text" 
+            name="beer_name"
+            minlength="2"
+            maxlength="100"
+            id="beer-name"
+            % if defined("tap"):
+                value="{{tap['beer_name']}}"
+            % end
+            placeholder=" "
+            required
+        >
+        <span class="hint">Min. 2 and max. 100 characters.</span>
+        <input
+            type="hidden" 
+            name="beer_id"
+            id="beer-id"
+            % if defined("tap"):
+                value="{{tap['beer_id']}}"
+            % end
+            pattern="[1-9][0-9]*" 
+            required
+        >
+        <div class="search-list hidden"></div>
+    </div>
+
+    <div class="beer-info grid flex-1 !self-center input-container">
+        % if defined('tap'):
+        <div class="text-sm leading-none">
+            <p>{{ tap['beer_style_name'] }}</p>
+            <p class="mt-1">{{ tap['brewery_name'] }}</p>
+            <div class="self-end text-xs flex justify-between max-w-[12rem] mt-1">
+                <p>ALC.: {{ tap['beer_alc'] }}%</p>
+                <span>|</span>
+                <p>IBU: {{ tap['beer_ibu'] or "-" }}</p>
+                <span>|</span>
+                <p>EBC: {{ tap['beer_ebc'] or "-" }}</p>
+            </div>
+        </div>
+
+        
+        % end
+    </div>
+
+    % if defined("tap"):
+        <div class="input-container-full">
+            <label for="tap-unavailable" class="checkbox">
+                <input
+                    type="checkbox"
+                    name="tap_unavailable"
+                    id="tap-unavailable"
+                    % if tap["tap_unavailable"]:
+                        checked
+                    % end
+                >
+                Tap unavailable
+            </label>
+        </div>
+        <input
+            type="hidden"
+            name="tap_id"
+            % if defined("tap"):
+                value="{{tap['tap_id']}}"
+            % end
+            pattern="[1-9][0-9]*"
+            required
+        />
+    % else:
+        <div class="input-container-full">
+            <label for="tap-off-the-wall" class="checkbox">
+                <input
+                    type="checkbox" 
+                    name="tap_off_the_wall" 
+                    id="tap-off-the-wall"
+                />
+                Off the wall
+            </label>
+        </div>
+    % end
+    <div class="form-action-bar">
+    % if defined('tap') and not session['role_id'] == 3:
+        <div class="btn-container">
+            <button class="btn-primary" onclick="validateForm( updateItem )" data-path="taps">Update tap</button>
+            <button class="btn-secondary" onclick="toggleActionBarSubMenu()">
+                <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <div class="action-bar-sub-menu hidden">
+                <button class="px-4 text-sm transition-colors text-secondary hover:text-primary" onclick="toggleDeleteModal()">
+                    <i class="fa-solid fa-trash-can mr-2"></i>
+                    Delete tap
+                </button>
+                <div class="caret"></div>
+            </div>
+        </div>
+    % elif defined('tap'):
+        <button class="btn-primary" onclick="validateForm(updateItem)" data-path="taps">Update tap</button>
+    % else:
+        <button class="btn-primary" onclick="validateForm(postItem)" data-path="taps">Create tap</button>
+    % end
+    </div>
+    
+
+</form>

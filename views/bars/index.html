@@ -1,0 +1,19 @@
+% rebase("base", page_title="Bars") 
+
+<div
+    id="spa"
+    data-page_title="Bars"
+    data-page_url="/bars"
+    >
+
+    <header class="sub-menu">
+        <h1>Bars</h1>
+        % include("components/href_plus", href="/bars/create")
+    </header>
+
+    <section class="content-container content-grid">
+        % for bar in bars:
+            % include("components/bar")
+        % end
+    </section>
+</div>

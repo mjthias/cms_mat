@@ -1,0 +1,28 @@
+<ul>
+    % if len(beer_styles) == 0:
+    <li 
+        onclick="postSearchItem()"
+        data-name="{{ search_term }}" 
+        data-key="beer_style_name"
+        data-path="beer-styles"
+        data-target="#beer_styles_search"
+        data-entry_type="beer_style"
+        class="p-2  hover:bg-highlight-bg-hover transition-colors cursor-pointer"
+    >
+        Add beer style '{{ search_term }}'.
+    </li>
+    % else:
+        % for beer_style in beer_styles:
+        <li
+            onclick="selectSearchedItem()"
+            data-id="{{beer_style['beer_style_id']}}"
+            data-name="{{beer_style['beer_style_name']}}"
+            data-target="#beer_styles_search"
+            data-entry_type="beer_style"
+            class="p-2 cursor-pointer hover:bg-highlight-bg-hover transition-colors"
+        >
+            {{beer_style["beer_style_name"]}}
+        </li>
+        % end
+    % end
+</ul>

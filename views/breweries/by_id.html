@@ -1,0 +1,15 @@
+% rebase("base", page_title=brewery["brewery_name"])
+
+<div id="spa" data-page_title="{{brewery['brewery_name']}}" data-page_url="/breweries/{{brewery['brewery_id']}}">
+    <header class="sub-menu">
+        <h1>{{brewery["brewery_name"]}}</h1>
+    </header>
+
+    <section class="form-container relative">
+        <div class="message hidden"></div>
+        % include('components/breweries_form')
+        % if not brewery["brewery_on_tap"]:
+            % include('components/deletion_form', id=brewery['brewery_id'], callBack='validateForm(deleteItem)', path='breweries')
+        % end
+    </section>
+</div>

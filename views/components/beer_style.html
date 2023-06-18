@@ -1,0 +1,8 @@
+% beer_style_url = f"/beer-styles/{beer_style['beer_style_id']}"
+<a
+    href="{{ beer_style_url }}" 
+    onclick="spa('{{ beer_style_url }}'); return false;"
+    class="text-lg hover:underline"
+    >
+    {{ beer_style['beer_style_name'] }}
+</a>

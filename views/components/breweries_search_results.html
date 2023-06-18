@@ -1,0 +1,29 @@
+<ul>
+    % if len(breweries) == 0:
+    <li 
+        onclick="postSearchItem()"
+        data-name="{{ search_term }}"
+        data-key="brewery_name"
+        data-path="breweries"
+        data-target="#brewery_search"
+        data-entry_type="brewery"
+        class="p-2 hover:bg-highlight-bg-hover transition-colors cursor-pointer"
+    >
+        Add brewery '{{ search_term }}'.
+    </li>
+    % else:
+        % for brewery in breweries:
+        <li
+            onclick="selectSearchedItem()"
+            data-id="{{brewery['brewery_id']}}"
+            data-name="{{brewery['brewery_name']}}"
+            data-target="#brewery_search"
+            data-entry_type="brewery"
+            class="p-2 cursor-pointer hover:bg-highlight-bg-hover transition-colors"
+            >
+            <span class="block text-sm pointer-events-none">{{brewery["brewery_name"]}}</span>
+            <span class="block text-xs text-secondary pointer-events-none">{{brewery["brewery_menu_name"]}}</span>
+        </li>
+        % end
+    % end
+</ul>

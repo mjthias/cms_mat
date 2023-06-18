@@ -1,0 +1,17 @@
+% rebase("base", page_title=bar["bar_name"])
+
+<div id="spa" data-page_title="{{bar['bar_name']}}" data-page_url="/bars/{{bar['bar_id']}}">
+    <header class="sub-menu">
+        <h1>{{bar["bar_name"]}}</h1>
+    </header>
+    
+    <section class="form-container relative">
+        <div class="message hidden"></div>
+        % include("components/bar_form")
+        % if session["bar_id"] == bar["bar_id"]:
+            % include("components/deletion_form", id=bar['bar_id'], callBack='validateForm(deleteSignedInBar)', path='bars')
+        % else:
+            % include("components/deletion_form", id=bar['bar_id'], callBack='validateForm(deleteItem)', path='bars')
+        % end
+    </section>
+</div>

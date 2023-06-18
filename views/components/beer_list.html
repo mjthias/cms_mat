@@ -1,0 +1,36 @@
+% for beer in beers:
+% href=f"/beers/{beer['beer_id']}"
+<article
+    id="{{ beer['beer_id'] }}"
+    href="{{ href }}" 
+    onclick="spa('{{ href }}')"
+    class="flex gap-2 cursor-pointer hover:bg-highlight-bg-hover p-2 rounded transition-colors"
+    >
+    <div class="w-20 h-20 rounded overflow-hidden">
+        % if beer['beer_image']:
+        <img 
+            class="w-full h-full object-cover"
+            src="/static/images/{{ beer['beer_image']}}" 
+            />
+        % else:
+        <img src="/static/images/placeholder.jpg"/>
+        % end
+    </div>
+    <div class="grid flex-1">
+        <h2 class="text-lg font-medium leading-none">{{ beer['beer_name'] }}</h2>
+        <div class="text-sm leading-none">
+            <p>{{ beer['beer_style_name'] }}</p>
+            <p class="mt-1">{{ beer['brewery_name'] }}</p>
+        </div>
+
+        <div class="self-end text-xs flex justify-between max-w-[12rem]">
+            <p>ALC.: {{ beer['beer_alc'] }}%</p>
+            <span>|</span>
+            <p>IBU: {{ beer['beer_ibu'] or "-" }}</p>
+            <span>|</span>
+            <p>EBC: {{ beer['beer_ebc'] or "-" }}</p>
+        </div>
+    </div>
+</article>
+% end
+

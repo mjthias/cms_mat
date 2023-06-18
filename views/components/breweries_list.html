@@ -1,0 +1,15 @@
+% setdefault('current_topic', None)
+
+% for brewery in breweries:
+
+    % if brewery["brewery_name"][0].capitalize() != current_topic:
+        % current_topic = brewery["brewery_name"][0].capitalize()
+        <li class="list-topic">
+            <h2 class="text-2xl font-medium">{{current_topic}}</h2>
+        </li>
+    % end
+
+    <li data-topic="{{current_topic}}">
+        % include("components/brewery")
+    </li>
+% end

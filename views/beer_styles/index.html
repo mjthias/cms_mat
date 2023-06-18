@@ -1,0 +1,28 @@
+% rebase("base", page_title="Beer styles") 
+
+<div
+    id="spa"
+    data-page_title="Beer styles"
+    data-page_url="/beer-styles"
+>   
+    <header class="sub-menu">
+        <h1>Beer styles</h1>
+        <div class="flex gap-4 items-center">
+            <form class="flex items-center relative" onsubmit="return false;">
+                <input oninput="searchContentList()" type="text" class="sub-menu-search" placeholder="Search...">
+                <i class="fa-solid fa-magnifying-glass absolute pointer-events-none text-secondary right-2"></i>
+            </form>
+            % include("components/href_plus", href="/beer-styles/create")
+        </div>
+    </header>
+
+    <ul class="content-grid content-search-container !hidden">
+    </ul>
+
+    <section class="content-container">
+        <ul class="content-grid">
+            % include("components/beer_styles_list")
+            % include("components/loader")
+        </ul>
+    </section>
+</div>
