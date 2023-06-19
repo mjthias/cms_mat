@@ -442,7 +442,17 @@ def image(image):
     file_name = f"{str(uuid.uuid4())}{file_extension}"
     file_path = f"{var.IMAGE_PATH}{file_name}"
     image.save(file_path)
+    print("YYYY")
+    print("YYYY")
+    print(file_path)
+    print("YYYY")
+    print("YYYY")
     imghdr_extension = imghdr.what(file_path)
+    print("XXXXXXXX")
+    print("XXXXXXXX")
+    print(imghdr_extension)
+    print("XXXXXXXX")
+    print("XXXXXXXX")
     if not file_extension == f".{imghdr_extension}":
         os.remove(file_path)
         return None, "Suspicious image."
