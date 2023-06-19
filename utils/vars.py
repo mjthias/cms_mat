@@ -35,4 +35,4 @@ NAME_MIN_LEN = 2
 NAME_MAX_LEN = 100
 
 # Image path
-IMAGE_PATH = "./static/images/"
+IMAGE_PATH = "/static/images/"
