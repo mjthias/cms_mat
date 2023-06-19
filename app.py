@@ -71,9 +71,9 @@ import routes.menus
 def _(dir_name, file_name):
     return static_file(file_name, root=f"./static/{dir_name}")
 
-@get("/static/images/<image>")
-def _(image):
-    return static_file(image, root="./static/images", mimetype="image/*")
+# @get("/static/images/<image>")
+# def _(image):
+#     return static_file(image, root="./static/images", mimetype="image/*")
 
 ##############################
 
